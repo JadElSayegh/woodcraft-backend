@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   // ensure `uploads` directory exists for static assets
@@ -39,8 +40,24 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('WoodCraft CMS API')
+    .setDescription(
+      'API documentation for the WoodCraft public website and admin CMS dashboard.',
+    )
+    .setVersion('1.0')
+    .addBearerAuth()
+    .addCookieAuth('access_token')
+    .build();
 
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+
+  SwaggerModule.setup('api-docs', app, swaggerDocument, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
   await app.listen(process.env.PORT || 3001);
 }
 
-bootstrap();
+void bootstrap();

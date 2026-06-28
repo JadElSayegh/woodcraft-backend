@@ -1,3 +1,4 @@
+// AppModule: root module that wires config, prisma, auth and cms modules
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth.module';

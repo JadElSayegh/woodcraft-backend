@@ -1,3 +1,4 @@
+// LoginDto: validate payload for login endpoint
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class LoginDto {

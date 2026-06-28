@@ -1,3 +1,4 @@
+// UpdateCharacteristicDto: validate payload for updating a characteristic
 import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class UpdateCharacteristicDto {

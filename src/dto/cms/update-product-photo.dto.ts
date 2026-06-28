@@ -1,3 +1,4 @@
+// UpdateProductPhotoDto: validate payload for updating a product photo record
 import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class UpdateProductPhotoDto {

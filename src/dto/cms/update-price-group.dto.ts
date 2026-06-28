@@ -1,3 +1,4 @@
+// UpdatePriceGroupDto: validate payload for updating a price group
 import { IsNumber, IsOptional } from 'class-validator';
 
 export class UpdatePriceGroupDto {

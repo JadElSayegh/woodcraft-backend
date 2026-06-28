@@ -1,3 +1,4 @@
+// AdminGuard: ensures the current user has ADMIN role
 import {
   CanActivate,
   ExecutionContext,
@@ -8,6 +9,7 @@ import { Role } from '@prisma/client';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
+  // canActivate: check user role on request object
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const user = request.user;

@@ -1,3 +1,4 @@
+// JwtStrategy: extracts JWT from cookies and validates the payload
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
@@ -14,6 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
+        // extract access token from cookie named `access_token`
         (request: Request) => {
           return request?.cookies?.access_token || null;
         },
@@ -23,6 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: JwtPayload) {
+    // validate: ensure user referenced in token exists
     const user = await this.prisma.user.findUnique({
       where: { id: payload.sub },
       select: {

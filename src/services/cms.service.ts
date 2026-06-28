@@ -1,3 +1,4 @@
+// CmsService: CRUD operations for homepage, wood types, pricing and gallery
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { UpdateHomepageDto } from '../dto/cms/update-homepage.dto';
@@ -17,6 +18,7 @@ export class CmsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getHomepage() {
+    // getHomepage: return singleton homepage content or 404
     const homepage = await this.prisma.homepageContent.findUnique({
       where: {
         singletonKey: 'homepage',
@@ -71,6 +73,7 @@ export class CmsService {
   }
 
   async getPricing() {
+    // getPricing: return wood types including price groups and ordered variants
     return this.prisma.woodType.findMany({
       where: {
         isActive: true,

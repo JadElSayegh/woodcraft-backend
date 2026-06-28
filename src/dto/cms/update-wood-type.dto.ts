@@ -1,3 +1,4 @@
+// UpdateWoodTypeDto: validate payload for updating a wood type
 import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class UpdateWoodTypeDto {

@@ -1,3 +1,4 @@
+// CreateCharacteristicDto: validate payload for adding a characteristic
 import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class CreateCharacteristicDto {

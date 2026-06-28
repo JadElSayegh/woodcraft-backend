@@ -1,3 +1,4 @@
+// UpdateHomepageDto: validate payload for modifying homepage content
 import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateHomepageDto {

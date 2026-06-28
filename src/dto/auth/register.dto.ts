@@ -1,3 +1,4 @@
+// RegisterDto: validate payload for user registration
 import {
   IsEmail,
   IsEnum,

@@ -1,3 +1,4 @@
+// JwtPayload: minimal shape stored in JWTs
 import { Role } from '@prisma/client';
 
 export type JwtPayload = {

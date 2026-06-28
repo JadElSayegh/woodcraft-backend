@@ -1,3 +1,4 @@
+// CmsModule: provides CMS controller and service
 import { Module } from '@nestjs/common';
 import { CmsController } from '../controllers/cms.controller';
 import { CmsService } from '../services/cms.service';

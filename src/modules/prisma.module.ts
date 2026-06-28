@@ -1,3 +1,4 @@
+// PrismaModule: exposes PrismaService for database access
 import { Module } from '@nestjs/common';
 import { PrismaService } from '../services/prisma.service';
 

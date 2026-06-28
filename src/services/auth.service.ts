@@ -1,3 +1,4 @@
+// AuthService: handles registration, login, token refresh, and logout
 import {
   BadRequestException,
   Injectable,
@@ -20,6 +21,7 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
+    // Register: ensure email unique, hash password, create user
     const existingUser = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
@@ -48,6 +50,7 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
+    // Login: validate credentials, issue access/refresh tokens
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
@@ -89,6 +92,7 @@ export class AuthService {
   }
 
   async refresh(userId: string, refreshToken: string) {
+    // Refresh: validate refresh token and issue new tokens
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
@@ -120,6 +124,7 @@ export class AuthService {
   }
 
   async logout(userId: string) {
+    // Logout: clear stored refresh token hash
     await this.prisma.user.update({
       where: { id: userId },
       data: { refreshHash: null },

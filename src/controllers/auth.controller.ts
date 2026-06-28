@@ -1,3 +1,4 @@
+// AuthController: exposes registration, login, refresh and logout endpoints
 import {
   Body,
   Controller,
@@ -50,6 +51,7 @@ export class AuthController {
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
+    // refresh: verify refresh cookie, issue new tokens and overwrite cookies
     const refreshToken = request.cookies?.refresh_token;
 
     if (!refreshToken) {
@@ -97,6 +99,7 @@ export class AuthController {
     accessToken: string,
     refreshToken: string,
   ) {
+    // setAuthCookies: write access and refresh tokens as httpOnly cookies
     response.cookie('access_token', accessToken, {
       httpOnly: true,
       sameSite: 'lax',

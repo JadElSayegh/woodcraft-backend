@@ -1,3 +1,4 @@
+// PrismaService: Prisma client wrapper that manages DB connection lifecycle
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaPg } from '@prisma/adapter-pg';
@@ -17,10 +18,12 @@ export class PrismaService
   }
 
   async onModuleInit() {
+    // Connect to the database when module initializes
     await this.$connect();
   }
 
   async onModuleDestroy() {
+    // Disconnect from the database when module is destroyed
     await this.$disconnect();
   }
 }

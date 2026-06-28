@@ -1,3 +1,4 @@
+// CmsController: HTTP endpoints for CMS management and public content
 import {
   BadRequestException,
   Body,
@@ -192,6 +193,7 @@ export class CmsController {
       storage: diskStorage({
         destination: './uploads',
         filename: (_req, file, callback) => {
+          // sanitize and create a unique filename for uploaded images
           const fileExtension = extname(file.originalname);
           const safeName = file.originalname
             .replace(fileExtension, '')
@@ -204,6 +206,7 @@ export class CmsController {
         },
       }),
       fileFilter: (_req, file, callback) => {
+        // only accept image mime types
         if (!file.mimetype.startsWith('image/')) {
           callback(
             new BadRequestException('Only image files are allowed.'),

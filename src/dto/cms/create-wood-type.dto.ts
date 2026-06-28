@@ -1,3 +1,4 @@
+// CreateWoodTypeDto: validate payload for creating a wood type entry
 import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class CreateWoodTypeDto {

@@ -1,3 +1,4 @@
+// TokenService: creates JWT access and refresh tokens
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -12,6 +13,7 @@ export class TokenService {
   ) {}
 
   async generateTokens(payload: JwtPayload) {
+    // generateTokens: sign and return access + refresh tokens
     const accessTokenExpiresIn =
       this.config.get<string>('ACCESS_TOKEN_EXPIRES_IN') || '15m';
 

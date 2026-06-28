@@ -1,3 +1,4 @@
+// AuthModule: wires up auth controller, services and JWT strategy
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';

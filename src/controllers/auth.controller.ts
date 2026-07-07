@@ -295,8 +295,7 @@ export class AuthController {
       }
     }
 
-    response.clearCookie('access_token');
-    response.clearCookie('refresh_token');
+    this.clearAuthCookies(response);
 
     return { message: 'Logged out successfully.' };
   }
@@ -306,21 +305,50 @@ export class AuthController {
     accessToken: string,
     refreshToken: string,
   ) {
-    // setAuthCookies: write access and refresh tokens as httpOnly cookies
-    response.cookie('access_token', accessToken, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: false,
-      maxAge: 15 * 60 * 1000,
-    });
+    // Use same-site cookies locally and cross-site cookies for deployed frontend URLs.
+    const accessCookieOptions = this.getAuthCookieOptions(15 * 60 * 1000);
+    const refreshCookieOptions = this.getAuthCookieOptions(
+      7 * 24 * 60 * 60 * 1000,
+    );
 
-    response.cookie('refresh_token', refreshToken, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: false,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    response.cookie('access_token', accessToken, accessCookieOptions);
+    response.cookie('refresh_token', refreshToken, refreshCookieOptions);
   }
+
+  private clearAuthCookies(response: Response) {
+    const cookieOptions = this.getAuthCookieOptions();
+
+    response.clearCookie('access_token', cookieOptions);
+    response.clearCookie('refresh_token', cookieOptions);
+  }
+
+  private getAuthCookieOptions(maxAge?: number) {
+    const frontendUrl = this.config.get<string>('FRONTEND_URL');
+    const isLocalFrontend = this.isLocalFrontendUrl(frontendUrl);
+
+    return {
+      httpOnly: true,
+      sameSite: isLocalFrontend ? ('lax' as const) : ('none' as const),
+      secure: !isLocalFrontend,
+      path: '/',
+      ...(maxAge !== undefined ? { maxAge } : {}),
+    };
+  }
+
+  private isLocalFrontendUrl(frontendUrl?: string) {
+    if (!frontendUrl) {
+      return true;
+    }
+
+    try {
+      const hostname = new URL(frontendUrl).hostname;
+
+      return hostname === 'localhost' || hostname === '127.0.0.1';
+    } catch {
+      return true;
+    }
+  }
+
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiCookieAuth('access_token')

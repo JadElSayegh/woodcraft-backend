@@ -6,11 +6,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
@@ -22,21 +17,18 @@ model User {
 }
 
 model HomepageContent {
-  id           String @id @default(uuid())
-  singletonKey String @unique @default("homepage")
-
-  heroTitle      String
-  heroSubtitle   String?
-  heroButtonText String?
-  heroButtonLink String?
-
+  id                  String   @id @default(uuid())
+  heroTitle           String
+  heroSubtitle        String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
   heroBackgroundImage String?
+  heroButtonLink      String?
+  heroButtonText      String?
   heroImageOne        String?
-  heroImageTwo        String?
   heroImageThree      String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  heroImageTwo        String?
+  singletonKey        String   @unique @default("homepage")
 }
 
 model TextSection {
@@ -51,64 +43,54 @@ model TextSection {
 }
 
 model WoodType {
-  id       String  @id @default(uuid())
-  name     String
-  image    String?
-  order    Int     @default(0)
-  isActive Boolean @default(true)
-
+  id              String               @id @default(uuid())
+  name            String
+  image           String?
+  order           Int                  @default(0)
+  isActive        Boolean              @default(true)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
   characteristics WoodCharacteristic[]
   priceGroups     WoodPriceGroup[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model WoodCharacteristic {
-  id         String  @id @default(uuid())
+  id         String   @id @default(uuid())
   woodTypeId String
   text       String
-  isPositive Boolean @default(true)
-  order      Int     @default(0)
-
-  woodType WoodType @relation(fields: [woodTypeId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isPositive Boolean  @default(true)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  woodType   WoodType @relation(fields: [woodTypeId], references: [id], onDelete: Cascade)
 
   @@index([woodTypeId])
 }
 
 model WoodPriceGroup {
-  id         String @id @default(uuid())
+  id         String             @id @default(uuid())
   woodTypeId String
-
-  height     Decimal @db.Decimal(10, 2)
-  thickness  Decimal @db.Decimal(10, 2)
-  pricePerM3 Decimal @db.Decimal(12, 2)
-
-  woodType WoodType           @relation(fields: [woodTypeId], references: [id], onDelete: Cascade)
-  variants WoodPriceVariant[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  height     Decimal            @db.Decimal(10, 2)
+  thickness  Decimal            @db.Decimal(10, 2)
+  pricePerM3 Decimal            @db.Decimal(12, 2)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  woodType   WoodType           @relation(fields: [woodTypeId], references: [id], onDelete: Cascade)
+  variants   WoodPriceVariant[]
 
   @@index([woodTypeId])
 }
 
 model WoodPriceVariant {
-  id               String @id @default(uuid())
+  id               String         @id @default(uuid())
   woodPriceGroupId String
-
-  length        Decimal @db.Decimal(10, 2)
-  volumeM3      Decimal @db.Decimal(12, 6)
-  pricePerPiece Decimal @db.Decimal(12, 2)
-  order         Int     @default(0)
-
-  priceGroup WoodPriceGroup @relation(fields: [woodPriceGroupId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  length           Decimal        @db.Decimal(10, 2)
+  volumeM3         Decimal        @db.Decimal(12, 6)
+  pricePerPiece    Decimal        @db.Decimal(12, 2)
+  order            Int            @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  priceGroup       WoodPriceGroup @relation(fields: [woodPriceGroupId], references: [id], onDelete: Cascade)
 
   @@index([woodPriceGroupId])
 }
@@ -120,4 +102,9 @@ model ProductPhoto {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
 }
